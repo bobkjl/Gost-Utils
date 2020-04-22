@@ -91,15 +91,15 @@ echo "请输入要停止的隧道PID：(Ctrl+C退出)"
 read id
 kill -9 $id
 echo "成功停止PID为 $id 的隧道！"
+done
 clear
 start_menu
-done
 }
 
 gost_running(){
     green "下面是正在运行中的隧道:"
 ps -ef | grep "gost" | grep -v "$0" | grep -v "grep" 
-start_menu
+gost_stop
 }
 
 install_gost(){
@@ -310,10 +310,10 @@ start_menu(){
     green "[3] 配置 服务端"
 #   echo -e "[4] 捐赠开发者"
     echo ————————————其他管理————————————
-    green "[4] 查看运行中的隧道"
-    green "[5] 停止运行中的隧道"
-    green "[6] 查看日志"
-    green "[7] 删除日志"
+    green "[4] 管理运行中的隧道"
+    #green "[5] 停止运行中的隧道"
+    green "[5] 查看日志"
+    green "[6] 删除日志"
     echo "请输入选项以继续，ctrl+C退出"
 
     opt=0
@@ -329,14 +329,11 @@ start_menu(){
 
     elif [ "$opt" = "4" ]; then
         gost_running
-		
-    elif [ "$opt" = "5" ]; then
-        gost_stop
         
-    elif [ "$opt" = "6" ]; then
+    elif [ "$opt" = "5" ]; then
         check_log
 
-    elif [ "$opt" = "7" ]; then
+    elif [ "$opt" = "6" ]; then
         rm_log
 
     elif [ "$opt" = "0" ]; then
