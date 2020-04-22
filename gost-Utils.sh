@@ -91,13 +91,14 @@ echo "请输入要停止的隧道PID：(Ctrl+C退出)"
 read id
 kill -9 $id
 echo "成功停止PID为 $id 的隧道！"
-Menu
+start_menu
 done
 }
 
 gost_running(){
     green "下面是正在运行中的隧道:"
 ps -ef | grep "gost" | grep -v "$0" | grep -v "grep" 
+start_menu
 }
 
 install_gost(){
@@ -168,11 +169,19 @@ set_Client(){
             echo -e "$cmd\n"
             eval $cmd
             echo -e "客户端隧道部署成功！"
+            echo -e "加入开机自启动!"
+            `rm -f /etc/rc.d/rc.local`
+            echo "${cmd}" > /etc/rc.d/rc.local
+            `chmod +x /etc/rc.d/rc.local`
                 elif [ "${vnum}" = "2" ]; then
                 cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="relay+${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 & "
             echo -e "$cmd\n"
             eval $cmd
             echo -e "客户端隧道部署成功！"
+              echo -e "加入开机自启动!"
+            `rm -f /etc/rc.d/rc.local`
+            echo "${cmd}" > /etc/rc.d/rc.local
+            `chmod +x /etc/rc.d/rc.local`
                 fi
         else
                 set_Client
@@ -237,11 +246,19 @@ set_Server(){
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
+              echo -e "加入开机自启动!"
+            `rm -f /etc/rc.d/rc.local`
+            echo "${cmd}" > /etc/rc.d/rc.local
+            `chmod +x /etc/rc.d/rc.local`
                 elif [ "${vnum}" = "2" ]; then
                  cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &"
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
+              echo -e "加入开机自启动!"
+            `rm -f /etc/rc.d/rc.local`
+            echo "${cmd}" > /etc/rc.d/rc.local
+            `chmod +x /etc/rc.d/rc.local`
                 fi
         else
                 set_Server
@@ -253,7 +270,6 @@ set_Server(){
 }
 
 start_menu(){
-clear
     echo -e " GOST 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}"
     echo "###        Gost Utils             ###"
     echo "###       By @DerrickZH           ###"
@@ -296,4 +312,5 @@ clear
         bash gost-Utils.sh
     fi
 }
+clear
 start_menu
