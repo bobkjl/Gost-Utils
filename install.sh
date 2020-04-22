@@ -8,7 +8,7 @@ chmod -R 777 Gost-Utils && cd Gost-Utils && bash gost-Utils.sh
 
 check_git() {
 	if [ -x "$(command -v git)" ]; then
-		blue "git is installed"
+		echo "git is installed"
 		# command
 	else
 		echo "Install Git"
