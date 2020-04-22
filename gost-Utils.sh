@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.1.0"
+sh_ver="1.1.1"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -102,7 +102,13 @@ ps -ef | grep "gost" | grep -v "$0" | grep -v "grep"
 
 install_gost(){
     clear
-    wget https://www.fiisi.com/gost/gost.sh && chmod +x gost.sh && bash gost.sh
+     `wget https://github.com/ginuerzh/gost/releases/download/v2.11.0/gost-linux-amd64-2.11.0.gz`
+                `gunzip gost-linux-amd64-2.11.0.gz`
+                `mv gost-linux-amd64-2.11.0 gost`
+                `chmod +x gost`
+                echo "gost安装成功"
+                sleep 5s
+        start_menu
 }
 
 set_Client(){
@@ -151,14 +157,22 @@ set_Client(){
         green "请输入隧道传输端口，有些机器屏蔽80，8080，443等端口，若有屏蔽，请输入其他端口，如不用修改,可直接回车下一步"
         read -e -p "请输入隧道传输端口(默认值80)：" tunnelPort
         [[ -z "${tunnelPort}" ]] && tunnelPort="80"
-        green -e "隧道类型：${tunnelType}\n中转机端口：${clientPort}\n落地机地址：${serviceAddr}\n落地机端口：${servicePort}\n隧道传输端口：${tunnelPort}\n"
-        read -p "Y/N？:" YorN
-        if [ "$YorN" = "Y" ]
+        echo -e "隧道类型：${tunnelType}\n中转机端口：${clientPort}\n落地机地址：${serviceAddr}\n落地机端口：${servicePort}\n隧道传输端口：${tunnelPort}\n"
+        echo -e "确认参数正确？[Y/n]"
+        read -p "(默认: y):" yn
+        [[ -z "${yn}" ]] && yn="y"
+        if [[ ${yn} == [Yy] ]]; 
         then
                 if [ "${vnum}" = "1" ]; then
-                gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 &
+                cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 & "
+            echo -e "$cmd\n"
+            eval $cmd
+            echo -e "客户端隧道部署成功！"
                 elif [ "${vnum}" = "2" ]; then
-                gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="relay+${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 &
+                cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="relay+${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 & "
+            echo -e "$cmd\n"
+            eval $cmd
+            echo -e "客户端隧道部署成功！"
                 fi
         else
                 set_Client
@@ -212,15 +226,22 @@ set_Server(){
         green "请输入隧道传输端口，有些机器屏蔽80，8080，443等端口，若有屏蔽，请输入其他端口，如不用修改,可直接回车下一步"
         read -e -p "请输入隧道传输端口(默认值80)：" tunnelPort
         [[ -z "${tunnelPort}" ]] && tunnelPort="80"
-        green -e "隧道传输端口：${tunnelPort}\n隧道类型：${tunnelType}\n"
-        read -p "Y/N？:" YorN
-        if [ "$YorN" = "Y" ]
+        echo -e "隧道传输端口：${tunnelPort}\n隧道类型：${tunnelType}\n"
+        echo -e "确认参数正确？[Y/n]"
+        read -p "(默认: y):" yn
+        [[ -z "${yn}" ]] && yn="y"
+        if [[ ${yn} == [Yy] ]]; 
         then
                 if [ "${vnum}" = "1" ]; then
-                 gost -L="${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &
-                echo "服务端隧道命令成功执行！"
+                 cmd="nohup ./gost -L="${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &"
+            echo -e "$cmd\n"
+            eval $cmd
+            echo -e "服务端端隧道部署成功！"
                 elif [ "${vnum}" = "2" ]; then
-                 gost -L="relay+${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &
+                 cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &"
+            echo -e "$cmd\n"
+            eval $cmd
+            echo -e "服务端端隧道部署成功！"
                 fi
         else
                 set_Server
