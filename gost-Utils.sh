@@ -261,7 +261,7 @@ clear
     echo ""
     green "[0] 检查更新"
     echo ————————————GOST管理————————————
-    green "[1] 安装GOST 此安装程序来自于https://www.fiisi.com"
+    green "[1] 安装GOST"
     echo ————————————隧道配置管理————————————
     green "[2] 配置 客户端"
     green "[3] 配置 服务端"
