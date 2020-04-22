@@ -13,3 +13,5 @@ chmod -R 777 Gost-Utils && cd Gost-Utils && bash gost-Utils.sh
 - 一键配置Gost客户端
 ### 作者
 Telegram:[DerrickZH](https://t.me/DerrickZH "DerrickZH")
+### 鸣谢
+感谢[HelloWorld-create](https://github.com/HelloWorld-create "HelloWorld-create")提供的部分代码

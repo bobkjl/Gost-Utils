@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.1.1"
+sh_ver="1.2.0"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -91,6 +91,7 @@ echo "请输入要停止的隧道PID：(Ctrl+C退出)"
 read id
 kill -9 $id
 echo "成功停止PID为 $id 的隧道！"
+clear
 start_menu
 done
 }
@@ -277,7 +278,7 @@ start_menu(){
     echo ""
     green "[0] 检查更新"
     echo ————————————GOST管理————————————
-    green "[1] 安装GOST"
+    green "[1] 安装GOST（默认已安装）"
     echo ————————————隧道配置管理————————————
     green "[2] 配置 客户端"
     green "[3] 配置 服务端"
