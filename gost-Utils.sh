@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.2.0"
+sh_ver="1.2.1"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -165,8 +165,17 @@ set_Client(){
         [[ -z "${yn}" ]] && yn="y"
         if [[ ${yn} == [Yy] ]]; 
         then
+            echo -e "是否生成日志？[Y/n]"
+           read -p "(默认: y):" yynn
+           [[ -z "${yynn}" ]] && yynn="y"
+           if [[ ${yynn} == [Yy] ]]; 
+           then
+           creatlog="1.log"
+           else
+           creatlog="/dev/null"
+           fi
                 if [ "${vnum}" = "1" ]; then
-                cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 & "
+                cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >"${creatlog}" 2>&1 & "
             echo -e "$cmd\n"
             eval $cmd
             echo -e "客户端隧道部署成功！"
@@ -175,7 +184,7 @@ set_Client(){
             echo "${cmd}" > /etc/rc.d/rc.local
             `chmod +x /etc/rc.d/rc.local`
                 elif [ "${vnum}" = "2" ]; then
-                cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="relay+${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >1.log 2>&1 & "
+                cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="relay+${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >"${creatlog}" 2>&1 & "
             echo -e "$cmd\n"
             eval $cmd
             echo -e "客户端隧道部署成功！"
@@ -242,8 +251,17 @@ set_Server(){
         [[ -z "${yn}" ]] && yn="y"
         if [[ ${yn} == [Yy] ]]; 
         then
+          echo -e "是否生成日志？[Y/n]"
+          read -p "(默认: y):" yynn
+          [[ -z "${yynn}" ]] && yynn="y"
+          if [[ ${yynn} == [Yy] ]]; 
+          then
+          creatlog="1.log"
+          else
+          creatlog="/dev/null"
+          fi
                 if [ "${vnum}" = "1" ]; then
-                 cmd="nohup ./gost -L="${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &"
+                 cmd="nohup ./gost -L="${tunnelType}"://:"${tunnelPort}" >"${creatlog}" 2>&1 &"
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
@@ -252,7 +270,7 @@ set_Server(){
             echo "${cmd}" > /etc/rc.d/rc.local
             `chmod +x /etc/rc.d/rc.local`
                 elif [ "${vnum}" = "2" ]; then
-                 cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}" >1.log 2>&1 &"
+                 cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}" >"${creatlog}" 2>&1 &"
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
@@ -268,6 +286,14 @@ set_Server(){
      echo -e "输入错误"
         set_Server
     fi   
+}
+
+check_log(){
+    cat 1.log
+}
+
+rm_log(){
+    rm -f 1.log
 }
 
 start_menu(){
@@ -286,6 +312,8 @@ start_menu(){
     echo ————————————其他管理————————————
     green "[4] 查看运行中的隧道"
     green "[5] 停止运行中的隧道"
+    green "[6] 查看日志"
+    green "[7] 删除日志"
     echo "请输入选项以继续，ctrl+C退出"
 
     opt=0
@@ -302,9 +330,15 @@ start_menu(){
     elif [ "$opt" = "4" ]; then
         gost_running
 		
-   elif [ "$opt" = "5" ]; then
+    elif [ "$opt" = "5" ]; then
         gost_stop
         
+    elif [ "$opt" = "6" ]; then
+        check_log
+
+    elif [ "$opt" = "7" ]; then
+        rm_log
+
     elif [ "$opt" = "0" ]; then
         Update
     

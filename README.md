@@ -3,8 +3,7 @@
 
 ### 使用方法
 ```shell
-git clone https://github.com/bobkjl/Gost-Utils.git
-chmod -R 777 Gost-Utils && cd Gost-Utils && bash gost-Utils.sh
+wget -N --no-check-certificate "https://raw.githubusercontent.com/bobkjl/Gost-Utils/master/install.sh" && bash install.sh
 ```
 
 ### 功能说明
