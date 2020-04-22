@@ -3,7 +3,7 @@
 
 ### 使用方法
 ```shell
-wget -N --no-check-certificate "https://raw.githubusercontent.com/bobkjl/Gost-Utils/master/gost-Utils.sh" && bash gost-Utils.sh
+git clone https://github.com/HelloWorld-create/GostScript.git chmod -R 777 GostScript && cd GostScript && bash gost.sh
 ```
 
 ### 功能说明
