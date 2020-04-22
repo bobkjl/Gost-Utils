@@ -101,6 +101,7 @@ ps -ef | grep "gost" | grep -v "$0" | grep -v "grep"
 }
 
 install_gost(){
+    clear
     wget https://www.fiisi.com/gost/gost.sh && chmod +x gost.sh && bash gost.sh
 }
 
