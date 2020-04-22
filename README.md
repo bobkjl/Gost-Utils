@@ -3,7 +3,7 @@
 
 ### 使用方法
 ```shell
-git clone https://github.com/HelloWorld-create/GostScript.git chmod -R 777 GostScript && cd GostScript && bash gost.sh
+git clone https://github.com/bobkjl/Gost-Utils.git chmod -R 777 Gost-Utils && cd Gost-Utils && bash gost-Utils.sh
 ```
 
 ### 功能说明
