@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.2.3"
+sh_ver="1.2.4"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -121,35 +121,43 @@ set_Client(){
         echo "系统：Centos7.x"
         echo "==============================================================="
         echo
-    white "本脚本支持 TCP 和 UDP over TCP 两种对接方式"
-    green "请选择对接方式(默认TCP)"
-    yellow "[1] TCP(游戏不适用)"
-    yellow "[2] UDP over TCP（游戏适用）"
+    white "本脚本支持 普通协议 和 Relay协议 两种对接方式"
+    green "请选择对接方式(默认普通协议)"
+    yellow "[1] 普通协议(部分传输类型支持UDP)"
+    yellow "[2] Relay协议（全传输类型支持UDP）"
     echo
     read -e -p "请输入数字[1~2](默认1)：" vnum
     [[ -z "${vnum}" ]] && vnum="1" 
 	if [[ ${vnum} == [12] ]]; then
-        echo ————————————选择隧道协议————————————
-        green "[1] ws"
-        green "[2] wss"
-        green "[3] mws"
-        green "[4] mwss"
-        green "[5] 自定义协议（请参考官方文档，不会就不要选择）"
+        echo ————————————选择传输类型————————————
+        green "[1] tls"
+        green "[2] mtls"
+        green "[3] ws"
+        green "[4] mws"
+        green "[5] wss"
+        green "[6] mwss"
+        green "[7] 自定义协议（请参考官方文档，不会就不要选择）"
         read -p "输入选择:" opt
         echo " "
         if [ "$opt" = "1" ]; then
-        tunnelType="ws"
+        tunnelType="tls"
 
         elif [ "$opt" = "2" ]; then
-        tunnelType="wss"
+        tunnelType="mtls"
 
         elif [ "$opt" = "3" ]; then
-        tunnelType="mws"
+        tunnelType="ws"
 
         elif [ "$opt" = "4" ]; then
-        tunnelType="mwss"
+        tunnelType="mws"
 
         elif [ "$opt" = "5" ]; then
+        tunnelType="wss"
+
+        elif [ "$opt" = "6" ]; then
+        tunnelType="mwss"
+
+        elif [ "$opt" = "7" ]; then
         read -p "自定义协议:" answer
           if [ -z "$answer" ]; then
              tunnelType="ws"
@@ -218,35 +226,43 @@ set_Server(){
         echo "系统：Centos7.x                      "
         echo "==============================================================="
         echo
-    white "本脚本支持 TCP 和 UDP over TCP 两种对接方式"
-    green "请选择对接方式(默认TCP)"
-    yellow "[1] TCP(游戏不适用)"
-    yellow "[2] UDP over TCP（游戏适用）"
+    white "本脚本支持 普通协议 和 Relay协议 两种对接方式"
+    green "请选择对接方式(默认普通协议)"
+    yellow "[1] 普通协议(部分传输类型支持UDP)"
+    yellow "[2] Relay协议（全传输类型支持UDP）"
     echo
     read -e -p "请输入数字[1~2](默认1)：" vnum
     [[ -z "${vnum}" ]] && vnum="1" 
 	if [[ ${vnum} == [12] ]]; then
-        echo ————————————选择隧道协议————————————
-        green "[1] ws"
-        green "[2] wss"
-        green "[3] mws"
-        green "[4] mwss"
-        green "[5] 自定义协议（请参考官方文档，不会就不要选择）"
+        echo ————————————选择传输类型————————————
+        green "[1] tls"
+        green "[2] mtls"
+        green "[3] ws"
+        green "[4] mws"
+        green "[5] wss"
+        green "[6] mwss"
+        green "[7] 自定义协议（请参考官方文档，不会就不要选择）"
         read -p "输入选择:" opt
         echo " "
         if [ "$opt" = "1" ]; then
-        tunnelType="ws"
+        tunnelType="tls"
 
         elif [ "$opt" = "2" ]; then
-        tunnelType="wss"
+        tunnelType="mtls"
 
         elif [ "$opt" = "3" ]; then
-        tunnelType="mws"
+        tunnelType="ws"
 
         elif [ "$opt" = "4" ]; then
-        tunnelType="mwss"
+        tunnelType="mws"
 
         elif [ "$opt" = "5" ]; then
+        tunnelType="wss"
+
+        elif [ "$opt" = "6" ]; then
+        tunnelType="mwss"
+
+        elif [ "$opt" = "7" ]; then
         read -p "自定义协议:" answer
           if [ -z "$answer" ]; then
              tunnelType="ws"
