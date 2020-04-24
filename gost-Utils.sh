@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.2.2"
+sh_ver="1.2.3"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -99,6 +99,7 @@ start_menu
 gost_running(){
     green "下面是正在运行中的隧道:"
 ps -ef | grep "gost" | grep -v "$0" | grep -v "grep" 
+echo "----------------------------"
 gost_stop
 }
 
@@ -116,8 +117,8 @@ install_gost(){
 set_Client(){
     clear
         echo "==============================================================="
-        echo "程序：GOST安装程序 客户端                   "
-        echo "系统：Centos7.x                      "
+        echo "程序：GOST安装程序 客户端"
+        echo "系统：Centos7.x"
         echo "==============================================================="
         echo
     white "本脚本支持 TCP 和 UDP over TCP 两种对接方式"
@@ -131,7 +132,9 @@ set_Client(){
         echo ————————————选择隧道协议————————————
         green "[1] ws"
         green "[2] wss"
-        green "[3] 自定义协议（请参考官方文档，不会就不要选择）"
+        green "[3] mws"
+        green "[4] mwss"
+        green "[5] 自定义协议（请参考官方文档，不会就不要选择）"
         read -p "输入选择:" opt
         echo " "
         if [ "$opt" = "1" ]; then
@@ -141,6 +144,12 @@ set_Client(){
         tunnelType="wss"
 
         elif [ "$opt" = "3" ]; then
+        tunnelType="mws"
+
+        elif [ "$opt" = "4" ]; then
+        tunnelType="mwss"
+
+        elif [ "$opt" = "5" ]; then
         read -p "自定义协议:" answer
           if [ -z "$answer" ]; then
              tunnelType="ws"
@@ -220,7 +229,9 @@ set_Server(){
         echo ————————————选择隧道协议————————————
         green "[1] ws"
         green "[2] wss"
-        green "[3] 自定义协议（请参考官方文档，不会就不要选择）"
+        green "[3] mws"
+        green "[4] mwss"
+        green "[5] 自定义协议（请参考官方文档，不会就不要选择）"
         read -p "输入选择:" opt
         echo " "
         if [ "$opt" = "1" ]; then
@@ -230,6 +241,12 @@ set_Server(){
         tunnelType="wss"
 
         elif [ "$opt" = "3" ]; then
+        tunnelType="mws"
+
+        elif [ "$opt" = "4" ]; then
+        tunnelType="mwss"
+
+        elif [ "$opt" = "5" ]; then
         read -p "自定义协议:" answer
           if [ -z "$answer" ]; then
              tunnelType="ws"
