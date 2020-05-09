@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.2.4"
+sh_ver="1.2.5"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -54,6 +54,39 @@ Update(){
 }
 
 #function
+
+gostonline(){
+    wget -qO /etc/profile.d/gostonline.sh https://raw.githubusercontent.com/bobkjl/gostonline/master/gostonline.sh||{
+        echo "脚本不存在，请通过github提交issue通知作者"
+        exit 1
+    }
+    echo 
+}
+
+setupService(){
+    wget -qO /usr/local/bin/gostonline.sh https://raw.githubusercontent.com/bobkjl/gostonline/master/gostonline.sh||{
+        echo "脚本不存在，请通过github提交issue通知作者"
+        exit 1
+    }
+    echo 
+
+
+cat > /lib/systemd/system/gostonline.service <<\EOF
+[Unit]
+Description=Gost配置文件开机自启
+
+[Service]
+ExecStart=/bin/bash /usr/local/bin/gostonline.sh
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable gostonline > /dev/null 2>&1
+service gostonline stop > /dev/null 2>&1
+service gostonline start > /dev/null 2>&1
+}
 
 check_wget() {
 	if [ -x "$(command -v wget)" ]; then
@@ -197,18 +230,16 @@ set_Client(){
             eval $cmd
             echo -e "客户端隧道部署成功！"
             echo -e "加入开机自启动!"
-            `rm -f /etc/rc.d/rc.local`
-            echo "${cmd}" > /etc/rc.d/rc.local
-            `chmod +x /etc/rc.d/rc.local`
+            sed -i "/gost_start(){/ a\\$cmd" gost_start.sh
+            autostart
                 elif [ "${vnum}" = "2" ]; then
                 cmd="nohup ./gost -L=tcp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -L=udp://:"${clientPort}"/"${serviceAddr}":"${servicePort}" -F="relay+${tunnelType}"://"${serviceAddr}":"${tunnelPort}" >"${creatlog}" 2>&1 & "
             echo -e "$cmd\n"
             eval $cmd
             echo -e "客户端隧道部署成功！"
               echo -e "加入开机自启动!"
-            `rm -f /etc/rc.d/rc.local`
-            echo "${cmd}" > /etc/rc.d/rc.local
-            `chmod +x /etc/rc.d/rc.local`
+            sed -i "/gost_start(){/ a\\$cmd" gost_start.sh
+            autostart
                 fi
         else
                 set_Client
@@ -299,18 +330,16 @@ set_Server(){
             eval $cmd
             echo -e "服务端端隧道部署成功！"
               echo -e "加入开机自启动!"
-            `rm -f /etc/rc.d/rc.local`
-            echo "${cmd}" > /etc/rc.d/rc.local
-            `chmod +x /etc/rc.d/rc.local`
+            sed -i "/gost_start(){/ a\\$cmd" gost_start.sh
+            autostart
                 elif [ "${vnum}" = "2" ]; then
                  cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}" >"${creatlog}" 2>&1 &"
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
               echo -e "加入开机自启动!"
-            `rm -f /etc/rc.d/rc.local`
-            echo "${cmd}" > /etc/rc.d/rc.local
-            `chmod +x /etc/rc.d/rc.local`
+            sed -i "/gost_start(){/ a\\$cmd" gost_start.sh
+            autostart
                 fi
         else
                 set_Server
@@ -327,6 +356,12 @@ check_log(){
 
 rm_log(){
     rm -f 1.log
+}
+
+autostart(){
+            chmod -R 777 /etc/rc.d/rc.local
+            chmod -R 777 /root/gost_start.sh
+            echo "bash /root/gost_start.sh">/etc/rc.d/rc.local
 }
 
 start_menu(){
@@ -377,5 +412,7 @@ start_menu(){
         bash gost-Utils.sh
     fi
 }
+gostonline
+#setupService
 clear
 start_menu
