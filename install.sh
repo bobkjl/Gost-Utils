@@ -37,5 +37,4 @@ install_tool() {
     fi 
 }
 
-
 install_gost
