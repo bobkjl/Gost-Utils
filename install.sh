@@ -4,11 +4,7 @@ install_gost(){
 	install_tool
     check_git
     git clone https://github.com/bobkjl/Gost-Utils.git
-    cd Gost-Utils
-    cp gost /root
-    cp gost-Utils.sh /root
-    cd
-    chmod -R 777 gost && chmod -R 777 gost-Utils.sh && bash gost-Utils.sh
+   chmod -R 777 Gost-Utils && cd Gost-Utils && bash gost-Utils.sh
 }
 
 check_git() {

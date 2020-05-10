@@ -360,8 +360,8 @@ rm_log(){
 
 autostart(){
             chmod -R 777 /etc/rc.d/rc.local
-            chmod -R 777 /root/gost_start.sh
-            echo "bash /root/gost_start.sh">/etc/rc.d/rc.local
+            chmod -R 777 /root/Gost-Utils/gost_start.sh
+            echo "bash /root/Gost-Utils/gost_start.sh">/etc/rc.d/rc.local
 }
 
 start_menu(){
