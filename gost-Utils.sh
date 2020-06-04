@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.2.6"
+sh_ver="1.2.7"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
