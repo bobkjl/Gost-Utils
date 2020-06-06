@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-sh_ver="1.2.7"
+sh_ver="1.3.0"
 github="raw.githubusercontent.com/bobkjl/gost-Utils/master"
 
 # 设置字体颜色函数
@@ -163,34 +163,26 @@ set_Client(){
     [[ -z "${vnum}" ]] && vnum="1" 
 	if [[ ${vnum} == [12] ]]; then
         echo ————————————选择传输类型————————————
-        green "[1] tls"
-        green "[2] mtls"
-        green "[3] ws"
-        green "[4] mws"
-        green "[5] wss"
-        green "[6] mwss"
-        green "[7] 自定义协议（请参考官方文档，不会就不要选择）"
+        green "[1] ws"
+        green "[2] mws"
+        green "[3] wss"
+        green "[4] mwss"
+        green "[5] 自定义协议（请参考官方文档，不会就不要选择）"
         read -p "输入选择:" opt
         echo " "
         if [ "$opt" = "1" ]; then
-        tunnelType="tls"
-
-        elif [ "$opt" = "2" ]; then
-        tunnelType="mtls"
-
-        elif [ "$opt" = "3" ]; then
         tunnelType="ws"
 
-        elif [ "$opt" = "4" ]; then
+        elif [ "$opt" = "2" ]; then
         tunnelType="mws"
 
-        elif [ "$opt" = "5" ]; then
+        elif [ "$opt" = "3" ]; then
         tunnelType="wss"
 
-        elif [ "$opt" = "6" ]; then
+        elif [ "$opt" = "4" ]; then
         tunnelType="mwss"
 
-        elif [ "$opt" = "7" ]; then
+        elif [ "$opt" = "5" ]; then
         read -p "自定义协议:" answer
           if [ -z "$answer" ]; then
              tunnelType="ws"
@@ -266,34 +258,26 @@ set_Server(){
     [[ -z "${vnum}" ]] && vnum="1" 
 	if [[ ${vnum} == [12] ]]; then
         echo ————————————选择传输类型————————————
-        green "[1] tls"
-        green "[2] mtls"
-        green "[3] ws"
-        green "[4] mws"
-        green "[5] wss"
-        green "[6] mwss"
-        green "[7] 自定义协议（请参考官方文档，不会就不要选择）"
+        green "[1] ws"
+        green "[2] mws"
+        green "[3] wss"
+        green "[4] mwss"
+        green "[5] 自定义协议（请参考官方文档，不会就不要选择）"
         read -p "输入选择:" opt
         echo " "
         if [ "$opt" = "1" ]; then
-        tunnelType="tls"
-
-        elif [ "$opt" = "2" ]; then
-        tunnelType="mtls"
-
-        elif [ "$opt" = "3" ]; then
         tunnelType="ws"
 
-        elif [ "$opt" = "4" ]; then
+        elif [ "$opt" = "2" ]; then
         tunnelType="mws"
 
-        elif [ "$opt" = "5" ]; then
+        elif [ "$opt" = "3" ]; then
         tunnelType="wss"
 
-        elif [ "$opt" = "6" ]; then
+        elif [ "$opt" = "4" ]; then
         tunnelType="mwss"
 
-        elif [ "$opt" = "7" ]; then
+        elif [ "$opt" = "5" ]; then
         read -p "自定义协议:" answer
           if [ -z "$answer" ]; then
              tunnelType="ws"
@@ -325,7 +309,7 @@ set_Server(){
           creatlog="/dev/null"
           fi
                 if [ "${vnum}" = "1" ]; then
-                 cmd="nohup ./gost -L="${tunnelType}"://:"${tunnelPort}" >"${creatlog}" 2>&1 &"
+                 cmd="nohup ./gost -L="${tunnelType}"://:"${tunnelPort}"?path=/ws&rbuf=16384&wbuf=16384&compression=false >"${creatlog}" 2>&1 &"
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
@@ -333,7 +317,7 @@ set_Server(){
             sed -i "/gost_start(){/ a\\$cmd" gost_start.sh
             autostart
                 elif [ "${vnum}" = "2" ]; then
-                 cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}" >"${creatlog}" 2>&1 &"
+                 cmd="nohup ./gost -L="relay+${tunnelType}"://:"${tunnelPort}"?path=/ws&rbuf=16384&wbuf=16384&compression=false >"${creatlog}" 2>&1 &"
             echo -e "$cmd\n"
             eval $cmd
             echo -e "服务端端隧道部署成功！"
