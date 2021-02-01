@@ -138,9 +138,9 @@ gost_stop
 
 install_gost(){
     clear
-     `wget https://github.com/ginuerzh/gost/releases/download/v2.11.0/gost-linux-amd64-2.11.0.gz`
-                `gunzip gost-linux-amd64-2.11.0.gz`
-                `mv gost-linux-amd64-2.11.0 gost`
+     `wget https://github.com/ginuerzh/gost/releases/download/v2.11.1/gost-linux-amd64-2.11.1.gz`
+                `gunzip gost-linux-amd64-2.11.1.gz`
+                `mv gost-linux-amd64-2.11.1.gz gost`
                 `chmod +x gost`
                 echo "gost安装成功"
                 sleep 5s
